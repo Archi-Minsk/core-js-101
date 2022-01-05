@@ -203,8 +203,48 @@ function extractEmails(str) {
  *             '└──────────┘\n'
  *
  */
-function getRectangleString(/* width, height */) {
-  throw new Error('Not implemented');
+function getRectangleString(width, height) {
+  let rectangle = '';
+  const minHeight = 0;
+  const maxHeight = height - 1;
+  const minWidth = 0;
+  const maxWidth = width - 1;
+
+  for (let h = 0; h < height; h += 1) {
+    for (let w = 0; w <= width; w += 1) {
+      switch (true) {
+        case h === minHeight && w === minWidth:
+          rectangle += '┌';
+          break;
+        case h === minHeight && w === maxWidth:
+          rectangle += '┐';
+          break;
+        case h === maxHeight && w === minWidth:
+          rectangle += '└';
+          break;
+        case h === maxHeight && w === maxWidth:
+          rectangle += '┘';
+          break;
+
+        case w === width:
+          rectangle += '\n';
+          break;
+
+        case h === minHeight || h === maxHeight:
+          rectangle += '─';
+          break;
+        case w === minWidth || w === maxWidth:
+          rectangle += '│';
+          break;
+
+        default:
+          rectangle += ' ';
+          break;
+      }
+    }
+  }
+
+  return rectangle;
 }
 
 
@@ -224,8 +264,17 @@ function getRectangleString(/* width, height */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  const cipher = (char) => {
+    if (char.match(/[a-z]/gi)) {
+      const shift = char.toLowerCase() > 'm' ? -13 : 13;
+      const code = char.charCodeAt() + shift;
+      return String.fromCharCode(code);
+    }
+
+    return char;
+  };
+  return str.split('').map(cipher).join('');
 }
 
 /**
